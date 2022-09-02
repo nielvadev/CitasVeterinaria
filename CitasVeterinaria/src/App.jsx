@@ -1,14 +1,14 @@
 import Header from "./components/Header"
 import Formulario from "./components/Formulario"
 import ListadoPacientes from "./components/ListadoPacientes"
-import { Nav } from "./components/Nav"
+import Navegador  from "./components/Navegador"
 
 function App() {
 
   return (
     <>
         <div>
-            <Nav />
+            <Navegador />
         </div>
 
         <div className="container mx-auto mt-1"> 
