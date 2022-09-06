@@ -1,13 +1,47 @@
+import {useState, useEffect} from "react"
+
 function Formulario() {
-  return (
-    <div className="md:w-1/2 lg:w-2/5">
+    const [nombreMasc, setNombreMasc] = useState('');
+    const [nombreProp, setNombreProp] = useState('');
+    const [email, setEmail] = useState('');
+    const [telefono, setTelefono] = useState('');
+    const [alta, setAlta] = useState('');
+    const [sintomas, setSintomas] = useState('');
+
+    const[error, setError] = useState(false)
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        //Validación del formulario
+        if([nombreMasc,nombreProp,email,telefono,alta,sintomas].includes('')){
+            console.log('Hay al menos un campo vacío');
+            setError(true)
+            return;
+        } 
+        setError(false);
+    }
+     
+    return (
+    <div className="md:w-1/2 lg:w-2/5 mx-3">
         <h2 className="font-black text-3xl text-center">Seguimiento Pacientes</h2>
         <p className="text-lg mt-5 text-center mb-10">
             Añade Pacientes y {' '}
             <span className="text-blue-600 font-bold">Administralos</span>
         </p>
 
-        <form className="bg-white shadow-md rounded-md py-10 px-5 mb-10">
+        <form
+            onSubmit={handleSubmit}
+            className="bg-white shadow-md rounded-md py-10 px-5 mb-10">
+            
+            //Mensaje ERROR en caso de campos vacíos
+            {error && 
+                <div className="bg-red-800 text-white text-center uppercase p-3 font-bold mb-3 rounded-md">
+                    <p>
+                        Todos los campos son obligatorios
+                    </p>
+                </div>
+            }
             <div className="mb-5">
                 <label htmlFor="mascota" className="block text-gray-800 uppercase font-bold">
                     Nombre Mascota
@@ -17,6 +51,8 @@ function Formulario() {
                     type="text"
                     className="border-2 w-full P-2 mt-2 placeholder-gray-400 rounded-sm"
                     placeholder="Nombre de la mascota"
+                    value={nombreMasc}
+                    onChange={ (e) => setNombreMasc(e.target.value)}
                 />
             </div>
 
@@ -29,6 +65,8 @@ function Formulario() {
                     type="text"
                     className="border-2 w-full P-2 mt-2 placeholder-gray-400 rounded-sm"
                     placeholder="Nombre del propietario"
+                    value={nombreProp}
+                    onChange={ (e) => setNombreProp(e.target.value)}
                 />
             </div>
 
@@ -41,6 +79,8 @@ function Formulario() {
                     type="email"
                     className="border-2 w-full P-2 mt-2 placeholder-gray-400 rounded-sm"
                     placeholder="Email contacto"
+                    value={email}
+                    onChange={ (e) => setEmail(e.target.value)}
                 />
             </div>
 
@@ -53,6 +93,8 @@ function Formulario() {
                     type="text"
                     className="border-2 w-full P-2 mt-2 placeholder-gray-400 rounded-sm"
                     placeholder="Número telefónico"
+                    value={telefono}
+                    onChange={ (e) => setTelefono(e.target.value)}
                 />
             </div>
 
@@ -64,6 +106,8 @@ function Formulario() {
                     id="alta"
                     type="date"
                     className="border-2 w-full P-2 mt-2 placeholder-gray-400 rounded-sm"
+                    value={alta}
+                    onChange={ (e) => setAlta(e.target.value)}
                 />
             </div>
 
@@ -75,6 +119,8 @@ function Formulario() {
                     id="sintomas"
                     className="border-2 w-full P-2 mt-2 placeholder-gray-400 rounded-sm"
                     placeholder="Describe los síntomas"
+                    value={sintomas}
+                    onChange={ (e) => setSintomas(e.target.value)}
                 />
             </div>
 
