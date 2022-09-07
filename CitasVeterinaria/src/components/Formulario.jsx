@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react"
+import Error from './Error'
 
-function Formulario() {
+function Formulario({pacientes, setPacientes, paciente, setPaciente}) {
     const [nombreMasc, setNombreMasc] = useState('');
     const [nombreProp, setNombreProp] = useState('');
     const [email, setEmail] = useState('');
@@ -9,6 +10,26 @@ function Formulario() {
     const [sintomas, setSintomas] = useState('');
 
     const[error, setError] = useState(false)
+
+    useEffect(() =>{
+        if(Object.keys(paciente).length > 0){
+            setNombreMasc(paciente.nombreMasc)
+            setNombreProp(paciente.nombreProp)
+            setEmail(paciente.email)
+            setTelefono(paciente.telefono)
+            setAlta(paciente.alta)
+            setSintomas(paciente.sintomas)
+        }
+    }, [paciente])
+
+    //Generador de ID
+    const generarId = () => {
+        const random = Math.random().toString(36).substring(2);
+        const fecha = Date.now().toString(36);
+
+        return fecha + random;
+    }
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -20,6 +41,41 @@ function Formulario() {
             return;
         } 
         setError(false);
+
+        //Objeto de Paciente
+        const objetoPaciente = {
+            nombreMasc,
+            nombreProp,
+            email,
+            telefono,
+            alta,
+            sintomas,
+            id: generarId()
+        }
+
+        if(paciente.id){
+            // Editando el registro
+            objetoPaciente.id = paciente.id;
+            const pacientesActualizados = pacientes.map(pacienteState => pacienteState.id === paciente.id ? objetoPaciente : pacienteState)
+            setPacientes(pacientesActualizados);
+            setPaciente({})
+
+        } else{
+            // Nuevo registro
+            objetoPaciente.id = generarId()
+            setPacientes([...pacientes, objetoPaciente]);
+        }
+        
+
+
+        //Reiniciar el Form
+        setNombreMasc('')
+        setNombreProp('')
+        setEmail('')
+        setTelefono('')
+        setAlta('')
+        setSintomas('')
+
     }
      
     return (
@@ -34,14 +90,8 @@ function Formulario() {
             onSubmit={handleSubmit}
             className="bg-white shadow-md rounded-md py-10 px-5 mb-10">
             
-            //Mensaje ERROR en caso de campos vacíos
-            {error && 
-                <div className="bg-red-800 text-white text-center uppercase p-3 font-bold mb-3 rounded-md">
-                    <p>
-                        Todos los campos son obligatorios
-                    </p>
-                </div>
-            }
+            {error && <Error mensaje='Todos los campos son obligatorios'/>}
+
             <div className="mb-5">
                 <label htmlFor="mascota" className="block text-gray-800 uppercase font-bold">
                     Nombre Mascota
@@ -128,7 +178,7 @@ function Formulario() {
                 type="submit"
                 className=" bg-blue-600 w-full p-3 text-white uppercase font-bold 
                             hover:bg-blue-800 cursor-pointer transition-colors shadow-md"
-                value="Agregar paciente"
+                value={paciente.id ? 'Editar paciente' : 'Agregar paciente'}
             />
         </form>
     </div>

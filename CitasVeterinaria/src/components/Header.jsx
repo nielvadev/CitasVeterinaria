@@ -9,7 +9,7 @@ function Header(){
             </h1>
             
             <p className="text-center text-lg">
-                Práctica Tailwind + React/Vite - Nielvadev
+                Práctica Tailwind + React/Vite en LocalStorage - Nielvadev
             </p>
         </>
     )
